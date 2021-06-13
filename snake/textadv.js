@@ -41,6 +41,6 @@ function begin() {
     pname = a.value
     var b = document.createElement("button")
     b.innerHTML = "begin"
-    b.setAttribute(onclick, "newtxt(\"hello\"+pname, \"p\")")
+    b.setAttribute(onclick, "newtxt(\"hello \"+pname, \"p\")")
     document.body.appendChild(b)
 }
