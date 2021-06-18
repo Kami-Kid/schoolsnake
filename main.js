@@ -10,6 +10,7 @@ class snakepart {
     }
 }
 
+let used = 0
 let score = 0
 const snakeparts = []
 let length = 2
@@ -22,10 +23,12 @@ let xvel = yvel = 0
 stopper = 0
 let applex = 3
 let appley = 15
+const moves = []
 
 
 
-document.addEventListener("keypress", movement)
+document.addEventListener("keypress", addlist)
+document.addEventListener("keypress", movement(Event, false))
 
 //game
 function draw() {
@@ -47,6 +50,7 @@ function draw() {
     drawsnake()
     drawscore()
 
+
     headx += xvel
     heady += yvel
     if (0 > headx || heady < 0 || headx > 19 || heady > 19) {
@@ -58,9 +62,12 @@ function draw() {
         speed = 5
         console.log("ded")
     }
+
     score = length - 2
     setTimeout(draw, 1000 / speed)
     if (stopper == 0) { stopper++ }
+    movement(moves[0], true)
+    moves.shift()
 }
 
 function clearscreen() {
@@ -86,6 +93,11 @@ function checkapplecol() {
         speed += 0.2
     }
 }
+
+function addlist(evt) {
+    moves.push(evt)
+    console.log(moves)
+}
 //function checksnakecol(){
 //    if()
 //}
@@ -106,39 +118,85 @@ function drawsnake() {
     }
 }
 
-function movement(evt) {
-    switch (evt.key) {
-        case "w":
-            if (yvel != 1) {
-                xvel = 0;
-                yvel = -1
-            }
-            break
-        case "s":
-            if (yvel != -1) {
-                xvel = 0;
-                yvel = 1
-            }
-            break
-        case "a":
-            if (xvel != 1) {
-                xvel = -1
+function movement(evt, useded) {
+    if (useded == false) {
+        switch (evt.key) {
+            case "w":
+                if (yvel != 1 && used != 1) {
+                    xvel = 0;
+                    yvel = -1
+                    used++
+                }
+                break
+            case "s":
+                if (yvel != -1 && used != 1) {
+                    xvel = 0;
+                    yvel = 1
+                    used++
+                }
+                break
+            case "a":
+                if (xvel != 1 && used != 1) {
+                    xvel = -1
+                    yvel = 0
+                    used++
+                }
+                break
+            case "d":
+                if (xvel != -1 && used != 1) {
+                    xvel = 1
+                    yvel = 0
+                    used++
+                }
+                break
+            case "\\":
+                xvel = 0
                 yvel = 0
-            }
-            break
-        case "d":
-            if (xvel != -1) {
-                xvel = 1
+                break
+            case "=":
+                score++
+                speed += 0.2
+                break
+        }
+    } else {
+
+        switch (evt.key) {
+            case "w":
+                if (yvel != 1) {
+                    xvel = 0;
+                    yvel = -1
+                    used++
+                }
+                break
+            case "s":
+                if (yvel != -1) {
+                    xvel = 0;
+                    yvel = 1
+                    used++
+                }
+                break
+            case "a":
+                if (xvel != 1) {
+                    xvel = -1
+                    yvel = 0
+                    used++
+                }
+                break
+            case "d":
+                if (xvel != -1) {
+                    xvel = 1
+                    yvel = 0
+                    used++
+                }
+                break
+            case "\\":
+                xvel = 0
                 yvel = 0
-            }
-            break
-        case " ":
-            xvel = 0
-            yvel = 0
-            break
-        case "=":
-            score++
-            speed += 0.2
-            break
+                break
+            case "=":
+                score++
+                speed += 0.2
+                break
+        }
     }
 }
