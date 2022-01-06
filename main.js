@@ -20,7 +20,7 @@ var speed = 7;
 let headx = 10;
 let heady = 10;
 let xvel = yvel = 0
-stopper = 0
+stopper = 1
 let applex = 3
 let appley = 15
 const moves = []
