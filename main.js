@@ -104,7 +104,7 @@ function addlist(evt) {
 
 setInterval(() => {
     len = stack.length
-    if (len >= 3) { stack.splice(2, len - 3) }
+    if (len >= 4) { stack.splice(3, len - 4) }
 })
 
 window.addEventListener("keydown", addlist)
