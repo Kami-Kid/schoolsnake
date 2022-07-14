@@ -16,14 +16,14 @@ const snakeparts = []
 let length = 2
 var tilecount = 20;
 var tilesize = canvas.width / tilecount - 2;
-var speed = 7;
+var speed = 8;
 let headx = 10;
 let heady = 10;
 let xvel = yvel = 0
-stopper = 1
+stopper = 0
 let applex = 3
 let appley = 15
-const moves = []
+let stack = []
 
 
 
@@ -42,7 +42,7 @@ function draw() {
             xvel = 0
             yvel = 0
             length = 2
-            speed = 7
+            speed = 8
             console.log("ded")
         }
     }
@@ -59,25 +59,26 @@ function draw() {
         xvel = 0
         yvel = 0
         length = 2
-        speed = 5
+        speed = 8
         console.log("ded")
     }
 
     score = length - 2
     setTimeout(draw, 1000 / speed)
     if (stopper == 0) { stopper++ }
-    movement(moves[0], true)
-    moves.shift()
+    movement()
 }
 
 function clearscreen() {
     ctx.fillStyle = "black"
     ctx.fillRect(0, 0, 400, 400)
 }
+clearscreen()
+draw()
 
 function drawscore() {
     ctx.fillStyle = "white"
-    ctx.fillText("score : " + score.toString(), 16 * tilecount, 1 * tilecount)
+    ctx.fillText("score : " + score.toString() + " speed : " + speed.toString(), 15 * tilecount, 1 * tilecount)
 }
 
 function drawapple() {
@@ -90,17 +91,26 @@ function checkapplecol() {
         applex = Math.floor(Math.random() * tilecount)
         appley = Math.floor(Math.random() * tilecount)
         length++
-        speed += 0.2
+        speed += speed < 12 ? (12 - speed) / 10 : 0
     }
 }
 
 function addlist(evt) {
-    moves.push(evt)
-    console.log(moves)
+    if (stack[stack.length - 1] != evt.key) {
+        stack.push(evt.key)
+        console.log(stack)
+    }
 }
-//function checksnakecol(){
-//    if()
-//}
+
+setInterval(() => {
+    len = stack.length
+    if (len >= 3) { stack.splice(2, len - 3) }
+})
+
+window.addEventListener("keydown", addlist)
+    //function checksnakecol(){
+    //    if()
+    //}
 
 function drawsnake() {
     //tail
@@ -118,86 +128,43 @@ function drawsnake() {
     }
 }
 
-function movement(evt, useded) {
-    if (useded == false) {
-        switch (evt.key) {
-            case "w":
-                if (yvel != 1 && used != 1) {
-                    xvel = 0;
-                    yvel = -1
-                    used++
-                }
-                break
-            case "s":
-                if (yvel != -1 && used != 1) {
-                    xvel = 0;
-                    yvel = 1
-                    used++
-                }
-                break
-            case "a":
-                if (xvel != 1 && used != 1) {
-                    xvel = -1
-                    yvel = 0
-                    used++
-                }
-                break
-            case "d":
-                if (xvel != -1 && used != 1) {
-                    xvel = 1
-                    yvel = 0
-                    used++
-                }
-                break
-            case "\\":
-                xvel = 0
+function movement() {
+    switch (stack.shift()) {
+        case "w":
+            if (yvel != 1) {
+                xvel = 0;
+                yvel = -1
+            } else {
+                movement()
+            }
+            break
+        case "s":
+            if (yvel != -1) {
+                xvel = 0;
+                yvel = 1
+            } else {
+                movement()
+            }
+            break
+        case "a":
+            if (xvel != 1) {
+                xvel = -1
                 yvel = 0
-                break
-            case "=":
-                score++
-                speed += 0.2
-                break
-        }
-    } else {
-
-        switch (evt.key) {
-            case "w":
-                if (yvel != 1) {
-                    xvel = 0;
-                    yvel = -1
-                    used++
-                }
-                break
-            case "s":
-                if (yvel != -1) {
-                    xvel = 0;
-                    yvel = 1
-                    used++
-                }
-                break
-            case "a":
-                if (xvel != 1) {
-                    xvel = -1
-                    yvel = 0
-                    used++
-                }
-                break
-            case "d":
-                if (xvel != -1) {
-                    xvel = 1
-                    yvel = 0
-                    used++
-                }
-                break
-            case "\\":
-                xvel = 0
+            } else {
+                movement()
+            }
+            break
+        case "d":
+            if (xvel != -1) {
+                xvel = 1
                 yvel = 0
-                break
-            case "=":
-                score++
-                speed += 0.2
-                break
-        }
+            } else {
+                movement()
+            }
+            break
+        case "\\":
+            xvel = 0
+            yvel = 0
+            break
     }
 }
-draw()
