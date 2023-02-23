@@ -62,9 +62,12 @@ function draw() {
         heady = 10
         xvel = 0
         yvel = 0
-        length = 2
         speed = 8
         console.log("ded")
+        if(hiScore > length - 2){
+            hiScore = length- 2 
+        }
+        length = 2
     }
 
     score = length - 2
