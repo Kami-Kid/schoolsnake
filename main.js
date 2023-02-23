@@ -24,6 +24,7 @@ stopper = 0
 let applex = 3
 let appley = 15
 let stack = []
+let hiScore = 10
 
 
 
@@ -41,9 +42,12 @@ function draw() {
             heady = 10
             xvel = 0
             yvel = 0
-            length = 2
             speed = 8
             console.log("ded")
+            if(hiScore > length - 2){
+                hiScore = length- 2 
+            }
+            length = 2
         }
     }
     drawapple()
@@ -78,7 +82,7 @@ draw()
 
 function drawscore() {
     ctx.fillStyle = "white"
-    ctx.fillText("score : " + score.toString() + " speed : " + speed.toString(), 15 * tilecount, 1 * tilecount)
+    ctx.fillText("Hi-score : " + hiScore.toString()+" score : " + score.toString() + " speed : " + speed.toString(), 15 * tilecount, 1 * tilecount)
 }
 
 function drawapple() {
